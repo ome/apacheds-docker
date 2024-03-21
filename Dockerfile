@@ -64,7 +64,8 @@ RUN mkdir ${APACHEDS_BOOTSTRAP}/cache \
     && mkdir ${APACHEDS_BOOTSTRAP}/partitions \
     && chown -R ${APACHEDS_USER}:${APACHEDS_GROUP} ${APACHEDS_BOOTSTRAP}
 
-RUN apt-get install -y pip python-dev libldap2-dev libsasl2-dev libssl-dev
+RUN apt-get install -y pip
+RUN apt-get install -y python-dev libldap2-dev libsasl2-dev libssl-dev
 RUN pip install python-ldap
 ADD bin/ldapmanager /usr/local/bin/ldapmanager
 
@@ -80,4 +81,4 @@ RUN curl -L -o /usr/local/bin/dumb-init \
     https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \
     chmod +x /usr/local/bin/dumb-init
 
-# ENTRYPOINT ["/run.sh"]
+ENTRYPOINT ["/run.sh"]
