@@ -17,7 +17,7 @@ The folder */var/lib/apacheds* contains the runtime data and thus has been defin
 
 The container can be started issuing the following command:
 
-    docker run --name ldap -d -p 389:10389 openmicroscopy/apacheds
+    docker run --name ldap --platform linux/amd64  -d -p 389:10389 openmicroscopy/apacheds
 
 
 ## Usage

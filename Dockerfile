@@ -1,11 +1,12 @@
-FROM ubuntu:16.04
+FROM --platform=linux/amd64 ubuntu:20.04
 MAINTAINER ome-devel@lists.openmicroscopy.org.uk
 
 #############################################
 # ApacheDS installation
 #############################################
 
-ENV APACHEDS_VERSION 2.0.0.AM26
+ENV APACHEDS_VERSION 2.0.0.AM27
+ENV APACHEDS_SNAPSHOT 2.0.0.AM28-SNAPSHOT
 ENV APACHEDS_ARCH amd64
 
 ENV APACHEDS_ARCHIVE apacheds-${APACHEDS_VERSION}-${APACHEDS_ARCH}.deb
@@ -23,12 +24,14 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections \
     && apt-get install -y \
+       ca-certificates \
        ldap-utils \
        procps \
        openjdk-8-jre-headless \
        curl \
-       jq \
-    && curl https://downloads.apache.org/directory/apacheds/dist/${APACHEDS_VERSION}/${APACHEDS_ARCHIVE} > ${APACHEDS_ARCHIVE} \
+       jq
+
+RUN curl https://dlcdn.apache.org//directory/apacheds/dist/2.0.0.AM27/apacheds-2.0.0.AM27-amd64.deb > ${APACHEDS_ARCHIVE} \
     && dpkg -i ${APACHEDS_ARCHIVE} \
     && rm ${APACHEDS_ARCHIVE}
 
@@ -61,12 +64,15 @@ RUN mkdir ${APACHEDS_BOOTSTRAP}/cache \
     && mkdir ${APACHEDS_BOOTSTRAP}/partitions \
     && chown -R ${APACHEDS_USER}:${APACHEDS_GROUP} ${APACHEDS_BOOTSTRAP}
 
-RUN apt-get install -y python-ldap
+RUN apt-get install -y pip python-dev libldap2-dev libsasl2-dev libssl-dev
+RUN pip install python-ldap
 ADD bin/ldapmanager /usr/local/bin/ldapmanager
 
 #############################################
 # ApacheDS wrapper command
 #############################################
+
+RUN mv /opt/apacheds-${APACHEDS_SNAPSHOT} /opt/apacheds-${APACHEDS_VERSION}
 
 # Correct for hard-coded INSTANCES_DIRECTORY variable
 RUN sed -i "s#/var/lib/apacheds-${APACHEDS_VERSION}#/var/lib/apacheds#" /opt/apacheds-${APACHEDS_VERSION}/bin/apacheds
