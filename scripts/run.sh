@@ -8,8 +8,8 @@
 # APACHEDS_USER
 # APACHEDS_GROUP
 
-APACHEDS_INSTANCE_DIRECTORY=${APACHEDS_DATA}/${APACHEDS_INSTANCE}
-PIDFILE="${APACHEDS_INSTANCE_DIRECTORY}/run/apacheds-${APACHEDS_INSTANCE}.pid"
+export APACHEDS_INSTANCE_DIRECTORY=${APACHEDS_DATA}-${APACHEDS_SNAPSHOT}
+export PIDFILE="${APACHEDS_INSTANCE_DIRECTORY}/default/run/apacheds-${APACHEDS_INSTANCE}.pid"
 
 # When a fresh data folder is detected then bootstrap the instance configuration.
 if [ ! -d ${APACHEDS_INSTANCE_DIRECTORY} ]; then
@@ -29,13 +29,13 @@ cleanup(){
 trap cleanup EXIT
 cleanup
 
-/opt/apacheds-${APACHEDS_VERSION}/bin/apacheds start ${APACHEDS_INSTANCE}
+/opt/apacheds-${APACHEDS_SNAPSHOT}/bin/apacheds start ${APACHEDS_INSTANCE}
 sleep 2  # Wait on new pid
 
 shutdown(){
     echo "Shutting down..."
-    /opt/apacheds-${APACHEDS_VERSION}/bin/apacheds stop ${APACHEDS_INSTANCE}
+    /opt/apacheds-${APACHEDS_SNAPSHOT}/bin/apacheds stop ${APACHEDS_INSTANCE}
 }
 
 trap shutdown INT TERM
-tail -n 0 --pid=$(cat $PIDFILE) -f ${APACHEDS_INSTANCE_DIRECTORY}/log/apacheds.log
+tail -n 0 --pid=$(cat $PIDFILE) -f ${APACHEDS_INSTANCE_DIRECTORY}/default/log/apacheds.log

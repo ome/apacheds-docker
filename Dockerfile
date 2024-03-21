@@ -72,14 +72,12 @@ ADD bin/ldapmanager /usr/local/bin/ldapmanager
 # ApacheDS wrapper command
 #############################################
 
-RUN mv /opt/apacheds-${APACHEDS_SNAPSHOT} /opt/apacheds-${APACHEDS_VERSION}
-
 # Correct for hard-coded INSTANCES_DIRECTORY variable
-RUN sed -i "s#/var/lib/apacheds-${APACHEDS_VERSION}#/var/lib/apacheds#" /opt/apacheds-${APACHEDS_VERSION}/bin/apacheds
+RUN sed -i "s#/var/lib/apacheds-${APACHEDS_VERSION}#/var/lib/apacheds#" /opt/apacheds-${APACHEDS_SNAPSHOT}/bin/apacheds
 
 
 RUN curl -L -o /usr/local/bin/dumb-init \
     https://github.com/Yelp/dumb-init/releases/download/v1.2.1/dumb-init_1.2.1_amd64 && \
     chmod +x /usr/local/bin/dumb-init
 
-ENTRYPOINT ["/run.sh"]
+# ENTRYPOINT ["/run.sh"]
