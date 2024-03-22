@@ -15,11 +15,15 @@ The project sources can be found on [GitHub](https://github.com/openmicroscopy/a
 
 The folder */var/lib/apacheds* contains the runtime data and thus has been defined as a volume. The image uses exactly the file system structure defined by the [ApacheDS documentation](https://directory.apache.org/apacheds/advanced-ug/2.2.1-debian-instance-layout.html).
 
-The local container that was built in the previous steps by issing the following command:
+### Run by Local Image
+
+Create and run a container using the image that was built in the previous steps:
 
     docker run --name ldap --platform linux/amd64 -dit -p 389:10389 openmicroscopy/apacheds:2.0.0.AM27
 
-The container can be started using a pre-built remote image by issuing the following command:
+### Run by Remote Image
+
+Alternatively, you can create and run a container using a pre-built remote image:
 
     docker run --name ldap --platform linux/amd64  -d -p 389:10389 openmicroscopy/apacheds
 
