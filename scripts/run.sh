@@ -13,10 +13,13 @@ PIDFILE="${APACHEDS_INSTANCE_DIRECTORY}/run/apacheds-${APACHEDS_INSTANCE}.pid"
 
 # When a fresh data folder is detected then bootstrap the instance configuration.
 if [ ! -d ${APACHEDS_INSTANCE_DIRECTORY} ]; then
+    echo "Create instance directory"
     mkdir ${APACHEDS_INSTANCE_DIRECTORY}
-    cp -rv ${APACHEDS_BOOTSTRAP}/* ${APACHEDS_INSTANCE_DIRECTORY}
-    chown -v -R ${APACHEDS_USER}:${APACHEDS_GROUP} ${APACHEDS_INSTANCE_DIRECTORY}
 fi
+
+echo "Bootstrap config"
+cp -Rv ${APACHEDS_BOOTSTRAP}/* ${APACHEDS_INSTANCE_DIRECTORY}
+chown -v -R ${APACHEDS_USER}:${APACHEDS_GROUP} ${APACHEDS_INSTANCE_DIRECTORY}
 
 cleanup(){
     if [ -e "${PIDFILE}" ];
