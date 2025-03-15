@@ -35,7 +35,7 @@ Example
     echo secret | ./ldapmanager passwd --login u1 -f-
 
     ./ldapmanager passwd --admin
-    ./ldapmanager passwd --dn uid=admin,ou=secret
+    ./ldapmanager passwd --dn uid=admin,ou=system
 
     ./ldapmanager group g1 --member u1 --owner u2 --owner -u3
     ./ldapmanager member g1 u1 --remove
